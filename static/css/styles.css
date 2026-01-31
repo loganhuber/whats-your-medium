@@ -1,0 +1,11 @@
+:root {
+  --primary-color: #4e4e4e;
+  --secondary-color: #d2cabf;
+  --tertiary-color: black;
+  --background-color: beige;
+}
+
+body {
+    width: 100%;
+
+}
