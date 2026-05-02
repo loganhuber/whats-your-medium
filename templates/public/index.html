@@ -3,5 +3,80 @@
 {% block title %}What's Your Medium{% endblock %}
 
 {% block body %}
-<h1>This is a test</h1>
+<main>
+    <div id="hero" class="container py-5">
+        <div class="row align-items-center justify-content-center">
+            <div class="col">
+                <h1>I will make your dog out of clay</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus consectetur officiis. Dolorum blanditiis perspiciatis quo porro magnam incidunt ipsam. Facere ipsum a reprehenderit expedita eaque. Maxime in esse fugiat.</p>
+            </div>
+            <div class="col">
+                <!-- <img class="img-fluid" src="{{url_for('static', filename='assets/pic_1.png')}}" alt="dog pic"> -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+
+                    <div class="carousel-indicators">
+                        <button type="button"
+                                data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide-to="0"
+                                class="active"></button>
+
+                        <button type="button"
+                                data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide-to="1"></button>
+
+                        <button type="button"
+                                data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide-to="2"></button>
+                    </div>
+
+                    <div class="carousel-inner ratio ratio-1x1">
+                        <div class="carousel-item active">
+                            <img class="d-block object-fit-cover w-100"
+                                src="{{ url_for('static', filename='assets/pic_1.png') }}">
+                        </div>
+
+                        <div class="carousel-item ratio ratio-1x1">
+                            <img class="d-block object-fit-cover w-100"
+                                src="{{ url_for('static', filename='assets/pic_2.png') }}">
+                        </div>
+
+                        <div class="carousel-item ratio ratio-1x1">
+                            <img class="d-block object-fit-cover w-100"
+                                src="{{ url_for('static', filename='assets/pic_3.png') }}">
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+
+                    <button class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row align-items-center justify-content-center">
+            <div class="col">
+                <img class="img-fluid" src="{{ url_for('static', filename='assets/pic_1.png') }}" alt="">
+            </div>
+            <div class="col ">
+                <h2>About</h2>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque culpa et deserunt quaerat similique alias eveniet, ipsam sit omnis voluptate quo ipsum ullam quae minus deleniti aspernatur reiciendis repellendus tenetur!</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda amet at mollitia facilis voluptatem rem illum ipsam ullam omnis placeat nostrum debitis explicabo accusamus, officia repudiandae voluptates eveniet sint veniam?</p>
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock %}

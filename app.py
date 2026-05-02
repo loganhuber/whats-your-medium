@@ -1,9 +1,7 @@
 from flask import Flask
-from routes_public import register_routes
+from routes import register_routes
 
 app = Flask(__name__)
-
-
 
 register_routes(app)    
 
