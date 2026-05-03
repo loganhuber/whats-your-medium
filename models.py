@@ -1,14 +1,16 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
-class Admin(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'admins'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    pw_hash = db.Column(db.String(50), nullable=False)
+    pw_hash = db.Column(db.String(255), nullable=False)
 
 
 class Image(db.Model):
@@ -17,13 +19,21 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id', nullable=True))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category_name = db.relationship("Category", backref='images')
 
+# category for images
 class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    category_name = db.Column(db.String(255), nullable=False)
 
+class ContentBlock(db.Model):
+    __tablename__ = 'content_blocks'
 
+    key = db.Column(db.String(255), primary_key=True)
+    value = db.Column(db.Text, nullable=True)
+    updated_at = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
+
+    
