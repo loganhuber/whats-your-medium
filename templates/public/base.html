@@ -9,23 +9,23 @@
 </head>
 
 
-<header class="nav-bar">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<header>
+    <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">What's Your Medium</a>
+            <a class="navbar-brand text-light" href="#">What's Your Medium</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+                    <a class="nav-link active text-light" aria-current="page" href="{{ url_for('index') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('contact') }}">Contact</a>
+                    <a class="nav-link text-light" href="{{url_for('contact') }}">Contact</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Portfolio
                     </a>
                 <ul class="dropdown-menu">
@@ -55,8 +55,12 @@
     
 </body>
 <footer>
-    <div>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus consequatur et quae aut eum suscipit placeat minima nostrum maxime, saepe quod sint unde esse ratione dolore omnis ad voluptates cupiditate!</p>
+    <div class="container pt-5 h-100">
+        <div col>
+            <h5>What's Your Medium</h5>
+            <p>whatsyourdogchicago@gmail.com</p>
+        </div>
+        
     </div>
 </footer>
 <!-- <script src="{{ url_for('static', filename='javascript/main.js') }}"></script> -->

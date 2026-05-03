@@ -1,23 +1,24 @@
 {% extends 'public/base.html' %}
 
 {% block body %}
-<h2>Contact</h2>
+<div class="container justify-content-center mt-5">
+    <div class="row text-center">
+        <h2>Contact</h2>
+    </div>
+</div>
 
-<div class="container">
-    <form action="" class="center">
-        <div class="row">
+<div class="form-container">
+    <form action="" class="my-5">
             <label for="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Enter your name..." required>
-        </div>
-        <div class="row">
+            <input class="form-control" type="text" name="name" id="name" placeholder="Enter your name..." required>
+
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Enter your email..." required>
-        </div>
-        <div class="row">
+            <input class="form-control" type="email" name="email" id="email" placeholder="Enter your email..." required>
+
             <label for="message">Message</label>
-            <input type="textarea" placeholder="Enter your message..." required>
-        </div>
-        <button type="submit">Send Message</button>
+             <textarea name="message" class="form-control" placeholder="Enter your message..." required rows="7" id=""></textarea>
+        <!-- </div> -->
+        <button class="btn btn-primary" type="submit">Send Message</button>
     </form>
 </div>
 {% endblock %}
