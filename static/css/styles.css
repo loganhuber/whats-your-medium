@@ -11,7 +11,7 @@
 /* BASE */
 
 body {
-  background-color: var(--background-primary)
+  background-color: var(--background-primary);
 }
 
 main {
