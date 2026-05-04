@@ -48,13 +48,24 @@ class AdminModelView(SecureModelView):
         if form.password.data:
             model.pwd = generate_password_hash(form.password.data)
 
+
+class CategoriesModelView(SecureModelView):
+    column_labels = {
+        'id' : 'ID',
+        'category_name' : 'Category'
+    }
+
+    column_list = ['id', 'category_name']
+
+    form_excluded_columns = ['images']
+
 class ContentBlocksModelView(SecureModelView):
 
     form_columns = ('key', 'value')
 
     column_labels = {
         "key" : "Key",
-        "value" : "content",
+        "value" : "Content",
         'updated_at' : "Updated at:"
     }
     column_list = ['key', 'value', 'updated_at']

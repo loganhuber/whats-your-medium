@@ -13,8 +13,10 @@
                 <h1>poo</h1>
                 {% endif %}
 
-                {% if hero_text %}
-                <p>{{ hero_text.value }}</p>
+                {% if hero_paragraphs %}
+                    {% for p in hero_paragraphs %}
+                    <p>{{ p }}</p>
+                    {% endfor %}
                 {% else %}
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus consectetur officiis. Dolorum blanditiis perspiciatis quo porro magnam incidunt ipsam. Facere ipsum a reprehenderit expedita eaque. Maxime in esse fugiat.</p>
                 {% endif %}
@@ -88,8 +90,10 @@
                 <h2 class="">About</h2>
                 {% endif %}
 
-                {% if bio_text %}
-                <p>{{ bio_text.value }}</p>
+                {% if bio_paragraphs %}
+                    {% for p in bio_paragraphs %}
+                    <p>{{ p }}</p>
+                    {% endfor %}
                 {% else %}
                 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque culpa et deserunt quaerat similique alias eveniet, ipsam sit omnis voluptate quo ipsum ullam quae minus deleniti aspernatur reiciendis repellendus tenetur!</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda amet at mollitia facilis voluptatem rem illum ipsam ullam omnis placeat nostrum debitis explicabo accusamus, officia repudiandae voluptates eveniet sint veniam?</p>

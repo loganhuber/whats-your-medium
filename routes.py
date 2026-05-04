@@ -1,27 +1,37 @@
 from flask import Flask, redirect, render_template, url_for, request, flash
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, ContentBlock
+from models import db, User, ContentBlock, Category
 
-
+def get_paragraphs(str) -> list:
+    return str.split('\n')
+    
 
 def register_routes(app):
+
+    @app.context_processor
+    def inject_categories():
+        categories = Category.query.all()
+        return {
+            'categories' : categories
+        }
     
     @app.route('/')
     def index():
 
-        # hero_title = db.session.get(ContentBlock, 'hero_title')
         hero_title = ContentBlock.query.filter_by(key='hero_title').one()
         hero_text = ContentBlock.query.filter_by(key='hero_text').one()
         bio_title = ContentBlock.query.filter_by(key='bio_title').one()
         bio_text = ContentBlock.query.filter_by(key='bio_text').one()
 
+        hero_paragraphs = get_paragraphs(hero_text.value)
+        bio_paragraphs = get_paragraphs(bio_text.value)
 
         return render_template('public/index.html',
                                hero_title=hero_title,
-                               hero_text=hero_text,
+                               hero_paragraphs=hero_paragraphs,
                                bio_title=bio_title,
-                               bio_text=bio_text
+                               bio_paragraphs=bio_paragraphs
                                )
     
     @app.route('/contact')

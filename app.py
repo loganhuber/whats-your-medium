@@ -4,9 +4,9 @@ from flask_admin import Admin
 from flask_login import LoginManager
 from routes import register_routes
 from config import Config
-from models import db, User, ContentBlock
+from models import db, User, ContentBlock, Category
 from werkzeug.security import generate_password_hash
-from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView
+from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView, CategoriesModelView
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -24,7 +24,8 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 admin.add_view(AdminModelView(User, db))
-admin.add_view(ContentBlocksModelView(ContentBlock, db.session))
+admin.add_view(ContentBlocksModelView(ContentBlock, db))
+admin.add_view(CategoriesModelView(Category, db))
 
 register_routes(app)    
 
