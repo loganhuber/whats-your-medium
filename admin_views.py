@@ -47,3 +47,16 @@ class AdminModelView(SecureModelView):
     def on_model_change(self, form, model, is_created):
         if form.password.data:
             model.pwd = generate_password_hash(form.password.data)
+
+class ContentBlocksModelView(SecureModelView):
+
+    form_columns = ('key', 'value')
+
+    column_labels = {
+        "key" : "Key",
+        "value" : "content",
+        'updated_at' : "Updated at:"
+    }
+    column_list = ['key', 'value', 'updated_at']
+
+        
