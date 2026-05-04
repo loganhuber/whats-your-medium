@@ -1,7 +1,8 @@
-from flask import Flask, redirect, render_template, url_for, request, flash
+from click import Path
+from flask import Flask, redirect, render_template, send_from_directory, url_for, request, flash
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, ContentBlock, Category
+from models import db, User, ContentBlock, Category, Image
 
 def get_paragraphs(str) -> list:
     return str.split('\n')
@@ -62,13 +63,20 @@ def register_routes(app):
         selected_category = request.args.get('catgeory_id')
         categories = Category.query.all()
 
+        images = Image.query.all()
+
         return render_template(
             'public/portfolio.html',
             selected_category=selected_category,
-            categories=categories
+            categories=categories,
+            images=images
             )
     
     @app.route('/logout', methods=["GET", "POST"])
     def logout():
         logout_user()
         return redirect('/')
+    
+    @app.route("/uploads/<path:name>")
+    def uploads(name):
+        return send_from_directory(Path(app.config['UPLOAD_FOLDER']), name)

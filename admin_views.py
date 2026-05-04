@@ -10,6 +10,7 @@ from wtforms import PasswordField, FileField
 from pathlib import Path
 from markupsafe import Markup
 from flask_admin.contrib.sqla.fields import QuerySelectField
+from models import Category
 
 
 class SecureAdminIndexView(AdminIndexView):
@@ -69,4 +70,104 @@ class ContentBlocksModelView(SecureModelView):
 
 class ImagesModelView(SecureModelView):
     extra_js = ['static/javascript/compressImg.js']
-        
+
+    def __init__(self, model, session, upload_path):
+        self.upload_path = upload_path
+
+        self.form_extra_fields = {
+            'category_name': QuerySelectField(
+                'Category',
+                query_factory=lambda: Category.query.order_by(Category.category_name).all(),
+                allow_blank=True,
+                get_label=lambda c: c.category_name if c else 'None'
+            ),
+            'image_file': FileField('Image File')
+        }
+
+        super().__init__(model, session)
+
+    def _image_formatter(view, context, model, name):
+        if not model.filename:
+            return ''
+        return Markup(f'<img src="/static/uploads/{model.filename}" style="max-width: 200px;">')
+    
+    def _category_formatter(view, context, model, name):
+        if not model.category_name:
+            return ''
+        return model.category_name.category_name
+    
+    def on_model_change(self, form, model, is_created):
+        from process_img import process_image
+
+        if is_created:
+            model.admin_id = current_user.id
+
+        file_data = form.image_file.data
+
+        if isinstance(file_data, FileStorage) and file_data and file_data.filename:
+            if model.filename:
+                upload_dir = Path(self.upload_path)
+
+                old_file = upload_dir / model.filename
+                small_dir = upload_dir.parent / f"{upload_dir.name}-small"
+                old_small = small_dir / f"{Path(model.filename).stem}-small.webp"
+
+                for f in (old_file, old_small):
+                    if f.is_file():
+                        try:
+                            f.unlink()
+                        except Exception as e:
+                            print("Error deleting old file:", f, e)
+
+            filename = Path(file_data.filename).stem
+
+            processed_filename = process_image(
+                file_data,
+                filename,
+                Path(self.upload_path)
+            )
+
+            model.filename = processed_filename
+
+        else:
+            # prevent FileStorage from being saved
+            # process image already handles saving
+            if not is_created:
+                # restore original value from DB
+                existing = self.session.get(type(model), model.id)
+                model.filename = existing.filename
+            else:
+                model.filename = None
+
+    def on_model_delete(self, model):
+        if not model.filename:
+            return
+
+        upload_dir = Path(self.upload_path)
+        # original image
+        file_path = upload_dir / model.filename
+        # small image directory (e.g. "gallery-small")
+        small_dir = upload_dir.parent / f"{upload_dir.name}-small"
+        # small image filename
+        file_small = small_dir / f"{Path(model.filename).stem}-small.webp"
+
+        for f in (file_path, file_small):
+            print("Deleting:", f)
+
+            if f.is_file():
+                try:
+                    f.unlink()
+                except Exception as e:
+                    print("Error deleting:", f, e)
+
+    column_formatters = {
+        'filename': _image_formatter,
+        'category_name': _category_formatter,
+    }
+    column_labels = {
+        'filename': 'Image',
+        'category_name': 'Category',
+        'description': 'Description'
+    }
+    column_list = ['filename', 'description', 'category_name']
+    form_excluded_columns = ['filename']

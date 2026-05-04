@@ -6,6 +6,7 @@ from routes import register_routes
 from config import Config
 from models import db, User, ContentBlock, Category, Image
 from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView, CategoriesModelView, ImagesModelView
+from pathlib import Path
 # from werkzeug.security import generate_password_hash
 
 app = Flask(__name__, instance_relative_config=True)
@@ -25,7 +26,12 @@ admin = Admin(app, index_view=SecureAdminIndexView())
 admin.add_view(AdminModelView(User, db))
 admin.add_view(ContentBlocksModelView(ContentBlock, db))
 admin.add_view(CategoriesModelView(Category, db))
-admin.add_view(ImagesModelView(Image, db))
+admin.add_view(
+    ImagesModelView(
+        Image,
+        db,
+        upload_path=Path(app.root_path) / 'static' / 'uploads'
+    ))
 
 register_routes(app)    
 

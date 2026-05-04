@@ -9,17 +9,23 @@
     {% for cat in categories %}
     <button class="nav-link portfolio-btn" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#{{ cat.id }}" type="button" role="tab" aria-controls="nav-home" aria-selected="true">{{ cat.category_name }}</button>
     {% endfor %}
-    <!-- <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button> -->
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
     {% for cat in categories %}
-    <div class="tab-pane fade" id="{{ cat.id }}" role="tabpanel" aria-labelledby="nav-profile-tab">{{ cat.category_name }}</div>
+    <div class="tab-pane fade" id="{{ cat.id }}" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <div class="container">
+        {% for img in images %}
+            {% if img.category_id == cat.id %}
+              <div class="portfolio-image-container">
+                <img src="{{ url_for('static', filename='uploads/' + img.filename) }}" alt="{{ img.image_name }}" class="portfolio-image">
+              </div>
+            {% endif %}
+        {% endfor %}
+
+      </div>
+    </div>
     {% endfor %}
-  <!-- <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
-  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div> -->
 </div>
 </main>
 
