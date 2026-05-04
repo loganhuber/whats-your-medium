@@ -57,9 +57,18 @@ def register_routes(app):
             flash("Invalid Credentials")
         return render_template('admin/login.html')
     
+    @app.route('/portfolio')
+    def portfolio():
+        selected_category = request.args.get('catgeory_id')
+        categories = Category.query.all()
+
+        return render_template(
+            'public/portfolio.html',
+            selected_category=selected_category,
+            categories=categories
+            )
+    
     @app.route('/logout', methods=["GET", "POST"])
     def logout():
-
-    
         logout_user()
         return redirect('/')

@@ -7,7 +7,6 @@ from flask import redirect, url_for
 from werkzeug.security import generate_password_hash
 from werkzeug.datastructures import FileStorage
 from wtforms import PasswordField, FileField
-# import os
 from pathlib import Path
 from markupsafe import Markup
 from flask_admin.contrib.sqla.fields import QuerySelectField
@@ -50,24 +49,24 @@ class AdminModelView(SecureModelView):
 
 
 class CategoriesModelView(SecureModelView):
+    column_list = ['id', 'category_name']
+    form_excluded_columns = ['images']
+
     column_labels = {
         'id' : 'ID',
         'category_name' : 'Category'
     }
 
-    column_list = ['id', 'category_name']
-
-    form_excluded_columns = ['images']
-
 class ContentBlocksModelView(SecureModelView):
-
     form_columns = ('key', 'value')
+    column_list = ['key', 'value', 'updated_at']
 
     column_labels = {
         "key" : "Key",
         "value" : "Content",
         'updated_at' : "Updated at:"
     }
-    column_list = ['key', 'value', 'updated_at']
 
+class ImagesModelView(SecureModelView):
+    extra_js = ['static/javascript/compressImg.js']
         

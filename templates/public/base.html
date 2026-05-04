@@ -30,13 +30,11 @@
                     </a>
                 <ul class="dropdown-menu">
                     {% for cat in categories %}
-                    <li><a class="dropdown-item" href="#">{{ cat.category_name }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('portfolio', category_id=cat.id) }}">{{ cat.category_name }}</a></li>
                     <!-- <li><hr class="dropdown-divider"></li> -->
+                     <!-- maybe add this break? I'd have to remove the last one cuz it looks weird -->
                     {% endfor %}
-                    <!-- <li><a class="dropdown-item" href="#">Dogs</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Pottery</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+
                 </ul>
                 </li>
 
@@ -58,6 +56,6 @@
         
     </div>
 </footer>
-<!-- <script src="{{ url_for('static', filename='javascript/main.js') }}"></script> -->
+<script src="{{ url_for('static', filename='javascript/main.js') }}"></script>
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </html>
