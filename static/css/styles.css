@@ -3,8 +3,9 @@
   --secondary-color: #d2cabf;
   --tertiary-color: black;
   --background-color: beige; */
-  --background-primary: rgb(255, 241, 138);
-
+  /* --background-primary: rgb(255, 241, 138); */
+  --background-primary: #f5a666;
+  /* font-family: 'playfair display', serif; */
 
 }
 
@@ -45,6 +46,12 @@ form {
 /* UTILS */
 
 
+.playfair {
+  font-family: 'ranade', sans-serif;
+  font-weight: 600;
+  
+}
+
 /* COMPONENTS */
 
 .form-container {
@@ -62,3 +69,10 @@ form {
   max-height: 80vh;
   object-fit: contain;
 }
+
+
+/* .img-break {
+  background-image: url('../assets/pic_3.png') no-repeat center center fixed;
+  background-size: cover;
+
+} */
