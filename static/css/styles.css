@@ -51,3 +51,14 @@ form {
   display: flex;
   justify-content: center;
 }
+
+.portfolio-image-container:hover .portfolio-image {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+#modal-image {
+  max-height: 80vh;
+  object-fit: contain;
+}

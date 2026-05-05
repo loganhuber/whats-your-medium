@@ -36,4 +36,11 @@ class ContentBlock(db.Model):
     value = db.Column(db.Text, nullable=True)
     updated_at = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
 
+class FAQ(db.Model):
+    __tablename__ = 'faqs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.String(255), nullable=False)
+    answer = db.Column(db.Text, nullable=False)
+
     

@@ -12,7 +12,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">What's Your Medium</a>
+            <a class="navbar-brand" href="{{ url_for('index')}}">What's Your Medium</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,16 +28,17 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Portfolio
                     </a>
-                <ul class="dropdown-menu">
-                    {% for cat in categories %}
-                    <li><a class="dropdown-item" href="{{ url_for('portfolio', category_id=cat.id) }}">{{ cat.category_name }}</a></li>
-                    <!-- <li><hr class="dropdown-divider"></li> -->
-                     <!-- maybe add this break? I'd have to remove the last one cuz it looks weird -->
-                    {% endfor %}
-
-                </ul>
+                    <ul class="dropdown-menu">
+                        {% for cat in categories %}
+                        <li><a class="dropdown-item" href="{{ url_for('portfolio', category_id=cat.id) }}">{{ cat.category_name }}</a></li>
+                        <!-- <li><hr class="dropdown-divider"></li> -->
+                        <!-- maybe add this break? I'd have to remove the last one cuz it looks weird -->
+                        {% endfor %}
+                    </ul>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('index') }}#faq">FAQ</a>
+                </li>
             </ul>
             </div>
         </div>

@@ -1,8 +1,35 @@
 {% extends 'public/base.html' %}
 
+{% block title %}Portfolio{% endblock %}
+
 {% block body %}
+<!-- Modal -->
+<div class="modal fade" id="modal-center" tabindex="-1" aria-labelledby="modalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="modalCenterTitle">Modal title</h5> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="" alt="" class="" id="modal-image" style="width: 100%; height: auto;">
+        <p id="modal-description" class="mt-3"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <main>
+    <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+  Launch demo modal
+</button> -->
+
+
+
     <h1>Hi mom. this is the portfolio page.</h1>
     <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -17,8 +44,10 @@
       <div class="container">
         {% for img in images %}
             {% if img.category_id == cat.id %}
-              <div class="portfolio-image-container">
-                <img src="{{ url_for('static', filename='uploads/' + img.filename) }}" alt="{{ img.image_name }}" class="portfolio-image">
+              <div class="portfolio-image-container" style="width: 33.33%; padding: 5px; box-sizing: border-box; float: left;">
+                <a href="#" class="img-link" data-bs-toggle="modal" data-bs-target="#modal-center" data-img-src="{{ url_for('static', filename='uploads/' + img.filename) }}" data-img-description="{{ img.description }}">
+                  <img src="{{ url_for('static', filename='uploads/' + img.filename) }}" alt="{{ img.image_name }}" class="portfolio-image" style="width: 100%; height: auto;">
+                </a>
               </div>
             {% endif %}
         {% endfor %}

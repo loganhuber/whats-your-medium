@@ -68,19 +68,35 @@ class ContentBlocksModelView(SecureModelView):
         'updated_at' : "Updated at:"
     }
 
+class FAQModelView(SecureModelView):
+    form_columns = ('question', 'answer')
+    column_list = ['id', 'question', 'answer']
+
+    column_labels = {
+        "id" : "ID",
+        "question" : "Question",
+        "answer" : "Answer"
+    }
+
 class ImagesModelView(SecureModelView):
-    extra_js = ['static/javascript/compressImg.js']
+    extra_js = ['/static/javascript/compressImg.js']
+
+    form_overrides = {
+        'category_name': QuerySelectField
+    }
+
+    form_args = {
+        'category_name': {
+            'query_factory': lambda: Category.query.order_by(Category.category_name).all(),
+            'allow_blank': True,
+            'get_label': lambda c: c.category_name if c else 'None'
+        }
+    }
 
     def __init__(self, model, session, upload_path):
         self.upload_path = upload_path
 
         self.form_extra_fields = {
-            'category_name': QuerySelectField(
-                'Category',
-                query_factory=lambda: Category.query.order_by(Category.category_name).all(),
-                allow_blank=True,
-                get_label=lambda c: c.category_name if c else 'None'
-            ),
             'image_file': FileField('Image File')
         }
 
@@ -134,7 +150,9 @@ class ImagesModelView(SecureModelView):
             # process image already handles saving
             if not is_created:
                 # restore original value from DB
-                existing = self.session.get(type(model), model.id)
+                # session may be a scoped_session, so get the actual session if needed
+                session = self.session.session if hasattr(self.session, 'session') else self.session
+                existing = session.query(type(model)).get(model.id)
                 model.filename = existing.filename
             else:
                 model.filename = None

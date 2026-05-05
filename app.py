@@ -4,8 +4,8 @@ from flask_admin import Admin
 from flask_login import LoginManager
 from routes import register_routes
 from config import Config
-from models import db, User, ContentBlock, Category, Image
-from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView, CategoriesModelView, ImagesModelView
+from models import db, User, ContentBlock, Category, Image, FAQ
+from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView, CategoriesModelView, ImagesModelView, FAQModelView
 from pathlib import Path
 # from werkzeug.security import generate_password_hash
 
@@ -32,6 +32,7 @@ admin.add_view(
         db,
         upload_path=Path(app.root_path) / 'static' / 'uploads'
     ))
+admin.add_view(FAQModelView(FAQ, db))
 
 register_routes(app)    
 
