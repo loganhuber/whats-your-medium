@@ -10,14 +10,14 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-12 col-md-6 ">
                     {% if hero_title %}
-                    <h1 class="display-2 playfair">{{ hero_title.value }}</h1>
+                    <h1 class="display-2 ranade bold">{{ hero_title.value }}</h1>
                     {% else %}
                     <h1>poo</h1>
                     {% endif %}
     
                     {% if hero_paragraphs %}
                         {% for p in hero_paragraphs %}
-                        <p>{{ p }}</p>
+                        <p class="ranade">{{ p }}</p>
                         {% endfor %}
                     {% else %}
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga minus consectetur officiis. Dolorum blanditiis perspiciatis quo porro magnam incidunt ipsam. Facere ipsum a reprehenderit expedita eaque. Maxime in esse fugiat.</p>
@@ -107,14 +107,14 @@
             <div class="col-12 col-md-6">
                 <br>
                 {% if bio_title %}
-                <h2>{{ bio_title.value }}</h2>
+                <h2 class="display-2 ranade bold">{{ bio_title.value }}</h2>
                 {% else %}
                 <h2 class="">About</h2>
                 {% endif %}
 
                 {% if bio_paragraphs %}
                     {% for p in bio_paragraphs %}
-                    <p>{{ p }}</p>
+                    <p class="ranade">{{ p }}</p>
                     {% endfor %}
                 {% else %}
                 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Doloremque culpa et deserunt quaerat similique alias eveniet, ipsam sit omnis voluptate quo ipsum ullam quae minus deleniti aspernatur reiciendis repellendus tenetur!</p>
