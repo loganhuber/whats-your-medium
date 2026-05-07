@@ -8,13 +8,17 @@ from models import db, User, ContentBlock, Category, Image, FAQ
 from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView, CategoriesModelView, ImagesModelView, FAQModelView
 from pathlib import Path
 from flask_migrate import Migrate
+from services.storage_service import StorageService
 # from werkzeug.security import generate_password_hash
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(Config)
 db.init_app(app)
+storage_service = StorageService(app)
 
 migrate = Migrate(app, db)
+
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -33,7 +37,7 @@ admin.add_view(
     ImagesModelView(
         Image,
         db,
-        upload_path=Path(app.root_path) / 'static' / 'uploads'
+        storage_service=storage_service
     ))
 admin.add_view(FAQModelView(FAQ, db))
 
@@ -41,16 +45,4 @@ register_routes(app)
 
 if __name__ in '__main__':
     app.run(debug=True)
-    # with app.app_context():
-    #     # db.create_all()
-    #     # print("db created")
-    #     pw_hash = generate_password_hash('password')
 
-    #     user = User(
-    #         username="logan",
-    #         email='cjhuber102@gmail.com',
-    #         pw_hash=pw_hash
-    #     )
-    #     db.session.add(user)
-    #     db.session.commit()
-    #     print("added user")

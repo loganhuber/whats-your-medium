@@ -17,10 +17,11 @@ class Image(db.Model):
     __tablename__ = 'images'
 
     id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(255), nullable=False)
+    filename = db.Column(db.String(255), nullable=True)
     description = db.Column(db.String(255), nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category_name = db.relationship("Category", backref='images')
+    storage_key = db.Column(db.String(255), nullable=False)
 
 # category for images
 class Category(db.Model):

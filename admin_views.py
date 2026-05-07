@@ -11,6 +11,9 @@ from pathlib import Path
 from markupsafe import Markup
 from flask_admin.contrib.sqla.fields import QuerySelectField
 from models import Category
+from services.storage_service import StorageService
+
+# storage_service = StorageService(current_app)
 
 
 class SecureAdminIndexView(AdminIndexView):
@@ -93,8 +96,8 @@ class ImagesModelView(SecureModelView):
         }
     }
 
-    def __init__(self, model, session, upload_path):
-        self.upload_path = upload_path
+    def __init__(self, model, session, storage_service):
+        self.storage_service = storage_service
 
         self.form_extra_fields = {
             'image_file': FileField('Image File')
@@ -103,9 +106,10 @@ class ImagesModelView(SecureModelView):
         super().__init__(model, session)
 
     def _image_formatter(view, context, model, name):
-        if not model.filename:
+        if not model.storage_key:
             return ''
-        return Markup(f'<img src="/static/uploads/{model.filename}" style="max-width: 200px;">')
+        url = f"https://{view.storage_service.region}.digitaloceanspaces.com/{view.storage_service.bucket}/{model.storage_key}"
+        return Markup(f'<img src="{url}" style="max-width: 200px;">')
     
     def _category_formatter(view, context, model, name):
         if not model.category_name:
@@ -113,7 +117,9 @@ class ImagesModelView(SecureModelView):
         return model.category_name.category_name
     
     def on_model_change(self, form, model, is_created):
-        from process_img import process_image
+        from services.process_img import process_image
+        import tempfile
+        import shutil
 
         if is_created:
             model.admin_id = current_user.id
@@ -121,62 +127,78 @@ class ImagesModelView(SecureModelView):
         file_data = form.image_file.data
 
         if isinstance(file_data, FileStorage) and file_data and file_data.filename:
-            if model.filename:
-                upload_dir = Path(self.upload_path)
+            # Delete old S3 files if updating
+            if model.storage_key:
+                try:
+                    self.storage_service.delete_image(model.storage_key)
+                except Exception as e:
+                    print("Error deleting old file from S3:", e)
 
-                old_file = upload_dir / model.filename
-                small_dir = upload_dir.parent / f"{upload_dir.name}-small"
-                old_small = small_dir / f"{Path(model.filename).stem}-small.webp"
-
-                for f in (old_file, old_small):
-                    if f.is_file():
-                        try:
-                            f.unlink()
-                        except Exception as e:
-                            print("Error deleting old file:", f, e)
-
+            # Get category name for S3 path
+            category = model.category_name.category_name if model.category_name else 'uncategorized'
             filename = Path(file_data.filename).stem
 
-            processed_filename = process_image(
-                file_data,
-                filename,
-                Path(self.upload_path)
-            )
+            # Create temporary directory for processing
+            temp_dir = Path(tempfile.mkdtemp())
 
-            model.filename = processed_filename
+            try:
+                # Process image (saves original and small versions to temp_dir)
+                processed_filename = process_image(
+                    file_data,
+                    filename,
+                    temp_dir
+                )
+
+                # Upload original file to S3
+                original_path = temp_dir / processed_filename
+                if original_path.exists():
+                    with open(original_path, 'rb') as f:
+                        s3_key = self.storage_service.upload_image(f, category, processed_filename)
+                    model.storage_key = s3_key
+
+                # Upload small version to S3 if it exists
+                small_filename = f"{Path(processed_filename).stem}-small.webp"
+                small_path = temp_dir / small_filename
+
+                if small_path.exists():
+                    with open(small_path, 'rb') as f:
+                        self.storage_service.upload_image(f, f"{category}-small", small_filename)
+
+            finally:
+                # Clean up temporary files
+                shutil.rmtree(temp_dir, ignore_errors=True)
 
         else:
             # prevent FileStorage from being saved
-            # process image already handles saving
             if not is_created:
                 # restore original value from DB
-                # session may be a scoped_session, so get the actual session if needed
                 session = self.session.session if hasattr(self.session, 'session') else self.session
                 existing = session.query(type(model)).get(model.id)
-                model.filename = existing.filename
+                model.storage_key = existing.storage_key
             else:
-                model.filename = None
+                model.storage_key = None
 
     def on_model_delete(self, model):
-        if not model.filename:
+        if not model.storage_key:
             return
 
-        upload_dir = Path(self.upload_path)
-        # original image
-        file_path = upload_dir / model.filename
-        # small image directory (e.g. "gallery-small")
-        small_dir = upload_dir.parent / f"{upload_dir.name}-small"
-        # small image filename
-        file_small = small_dir / f"{Path(model.filename).stem}-small.webp"
+        # Delete original from S3
+        try:
+            self.storage_service.delete_image(model.storage_key)
+        except Exception as e:
+            print("Error deleting original from S3:", e)
 
-        for f in (file_path, file_small):
-            print("Deleting:", f)
-
-            if f.is_file():
-                try:
-                    f.unlink()
-                except Exception as e:
-                    print("Error deleting:", f, e)
+        # Delete small version from S3
+        # Convert: whats-your-medium/uploads/category/{uuid}.webp
+        #      to: whats-your-medium/uploads/category-small/{uuid}.webp
+        key_parts = model.storage_key.rsplit('/', 1)
+        if len(key_parts) == 2:
+            dir_path, filename = key_parts
+            small_key = f"{dir_path}-small/{filename}"
+            try:
+                self.storage_service.delete_image(small_key)
+            except Exception as e:
+                print("Error deleting small version from S3:", e)
 
     column_formatters = {
         'filename': _image_formatter,
@@ -188,4 +210,4 @@ class ImagesModelView(SecureModelView):
         'description': 'Description'
     }
     column_list = ['filename', 'description', 'category_name']
-    form_excluded_columns = ['filename']
+    form_excluded_columns = ['filename', 'storage_key']
