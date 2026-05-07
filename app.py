@@ -7,11 +7,14 @@ from config import Config
 from models import db, User, ContentBlock, Category, Image, FAQ
 from admin_views import AdminModelView, SecureAdminIndexView, ContentBlocksModelView, CategoriesModelView, ImagesModelView, FAQModelView
 from pathlib import Path
+from flask_migrate import Migrate
 # from werkzeug.security import generate_password_hash
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(Config)
 db.init_app(app)
+
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
