@@ -1,0 +1,11 @@
+
+{% for img in images %}
+    <div class="portfolio-image-container col-12 col-md-6 col-lg-4" style="padding: 5px; box-sizing: border-box;">
+        <a href="#" class="img-link w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-center" data-img-src="{{ img.url }}" data-img-description="{{ img.description }}">
+        <div class="image-container">
+            <img src="{{ img.url_small }}" alt="{{ img.description }}" class="placeholder-image object-fit" style="width: 100%; height: auto;">
+            <img loading="lazy" src="{{ img.url }}" alt="{{ img.description }}" class="portfolio-image object-fit" style="width: 100%; height: auto;">
+        </div>
+        </a>
+    </div>
+{% endfor %}

@@ -1,8 +1,9 @@
 from click import Path
-from flask import Flask, redirect, render_template, send_from_directory, url_for, request, flash
+from flask import Flask, redirect, render_template, send_from_directory, url_for, request, flash, jsonify
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User, ContentBlock, Category, Image, FAQ
+from sqlalchemy import desc
 
 def get_paragraphs(str) -> list:
     return str.split('\n')
@@ -63,10 +64,10 @@ def register_routes(app):
     
     @app.route('/portfolio')
     def portfolio():
-        selected_category = request.args.get('catgeory_id')
+        selected_category = request.args.get('category_id')
         categories = Category.query.all()
-
-        images = Image.query.all()
+        print(f"selected category: {selected_category}")
+        images = Image.query.filter_by(category_id=selected_category).order_by(desc(Image.id)).limit(2).all()
 
         return render_template(
             'public/portfolio.html',
@@ -75,6 +76,34 @@ def register_routes(app):
             images=images
             )
     
+
+    @app.route('/portfolio/load-more', methods=["GET"])
+    def portfolio_load_more():
+        selected_category = request.args.get('category_id')
+        offset = request.args.get("offset", 0, type=int)
+
+        images = (
+            Image.query.filter_by(category_id=selected_category)
+            .order_by(desc(Image.id))
+            .limit(2)
+            .offset(offset)
+            .all()
+        )
+
+        html = render_template(
+            'public/components/image-card.html',
+            images=images
+            )
+
+        return jsonify({
+            "html" : html
+        })
+
+
+
+
+
+
     @app.route('/logout', methods=["GET", "POST"])
     def logout():
         logout_user()

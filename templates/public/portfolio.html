@@ -34,7 +34,9 @@
     <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     {% for cat in categories %}
-    <button class="nav-link portfolio-btn" id="nav-{{ cat.id }}-tab" data-bs-toggle="tab" data-bs-target="#cat-{{ cat.id }}" type="button" role="tab" aria-controls="cat-{{ cat.id }}" aria-selected="true">{{ cat.category_name }}</button>
+
+      <button class="nav-link portfolio-btn" id="nav-{{ cat.id }}-tab" data-bs-toggle="tab" data-bs-target="#cat-{{ cat.id }}" type="button" role="tab" aria-controls="cat-{{ cat.id }}" aria-selected="true">{{ cat.category_name }}</button>
+
     {% endfor %}
   </div>
 </nav>
@@ -42,58 +44,20 @@
     {% for cat in categories %}
     <div class="tab-pane fade" id="cat-{{ cat.id }}" role="tabpanel" aria-labelledby="nav-{{ cat.id }}-tab">
       <div class="container align-items-center">
-        <div class="row masonry-container">
+        <div class="row masonry-container" data-category-id="{{ cat.id }}">
 
-          {% for img in images %}
-              {% if img.category_id == cat.id %}
-                <div class="portfolio-image-container col-12 col-md-6 col-lg-4" style="padding: 5px; box-sizing: border-box;">
-                  <a href="#" class="img-link w-100 h-100" data-bs-toggle="modal" data-bs-target="#modal-center" data-img-src="{{ img.url }}" data-img-description="{{ img.description }}">
-                    <div class="image-container">
-                      <img src="{{ img.url_small }}" alt="{{ img.description }}" class="placeholder-image object-fit" style="width: 100%; height: auto;">
-                      <img loading="lazy" src="{{ img.url }}" alt="{{ img.description }}" class="portfolio-image object-fit" style="width: 100%; height: auto;">
-                    </div>
-                  </a>
-                </div>
-              {% endif %}
-          {% endfor %}
+              {% include 'public/components/image-card.html' %}
+
         </div>
-
       </div>
+      <button class="btn btn-primary load-more-btn" data-category-id="{{ cat.id }}">Load More</button>
     </div>
     {% endfor %}
 </div>
 </main>
+<script src="{{ url_for('static', filename='javascript/portfolio.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    function initMasonry(container) {
-        imagesLoaded(container, function() {
-            new Masonry(container, {
-                percentPosition: true,
-                itemSelector: '.portfolio-image-container'
-            });
-        });
-    }
 
-    // Initialize masonry for all containers after images load
-    const masonryContainers = document.querySelectorAll('.masonry-container');
-    masonryContainers.forEach(container => {
-        initMasonry(container);
-    });
-
-    // Reinitialize masonry when tabs are shown
-    const tabElements = document.querySelectorAll('button[data-bs-toggle="tab"]');
-    tabElements.forEach(tab => {
-        tab.addEventListener('shown.bs.tab', function (event) {
-            const targetId = event.target.getAttribute('data-bs-target');
-            const targetContainer = document.querySelector(targetId + ' .masonry-container');
-            if (targetContainer) {
-                initMasonry(targetContainer);
-            }
-        });
-    });
-});
-</script>
 
 {% endblock %}
