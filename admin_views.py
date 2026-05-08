@@ -158,7 +158,8 @@ class ImagesModelView(SecureModelView):
 
                 if small_path.exists():
                     with open(small_path, 'rb') as f:
-                        self.storage_service.upload_image(f, f"{category}-small", small_filename)
+                        s3_key_small = self.storage_service.upload_image(f, f"{category}-small", small_filename)
+                    model.storage_key_small = s3_key_small
 
             finally:
                 # Clean up temporary files
@@ -206,4 +207,4 @@ class ImagesModelView(SecureModelView):
         'description': 'Description'
     }
     column_list = ['filename', 'description', 'category_name']
-    form_excluded_columns = ['filename', 'storage_key']
+    form_excluded_columns = ['filename', 'storage_key', 'storage_key_small']

@@ -23,10 +23,15 @@ class Image(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category_name = db.relationship("Category", backref='images')
     storage_key = db.Column(db.String(255), nullable=False)
+    storage_key_small = db.Column(db.String(255), nullable=False)
 
     @property
     def url(self):
         return f"https://{Config.DO_SPACES_REGION}.digitaloceanspaces.com/{Config.DO_SPACES_BUCKET}/{self.storage_key}"
+    
+    @property
+    def url_small(self):
+        return f"https://{Config.DO_SPACES_REGION}.digitaloceanspaces.com/{Config.DO_SPACES_BUCKET}/{self.storage_key_small}"
         
 
 # category for images

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
+    loadImgs()
     openSelectedCategory()
     openModalOnImageClick()
 })
@@ -29,7 +29,26 @@ function openSelectedCategory() {
     const params = new URLSearchParams(window.location.search);
     const selected = params.get("category_id");
     console.log(selected)
-    const btn = document.querySelector(`.portfolio-btn[data-bs-target='#${selected}']`)
+    const btn = document.querySelector(`.portfolio-btn[data-bs-target='#cat-${selected}']`)
     if (!btn) return;
     if (selected) btn.click();
+}
+
+
+function loadImgs() {
+  const imgs = document.querySelectorAll('.portfolio-image');
+
+  imgs.forEach((img) => {
+    const show = () => {
+      requestAnimationFrame(() => {
+        img.classList.add('visible');
+      });
+    };
+
+    if (img.complete) {
+      show();
+    } else {
+      img.onload = show;
+    }
+  });
 }

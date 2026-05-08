@@ -71,8 +71,20 @@ form {
 }
 
 
-/* .img-break {
-  background-image: url('../assets/pic_3.png') no-repeat center center fixed;
-  background-size: cover;
+.image-container {
+  display: grid;
+}
 
-} */
+.portfolio-image {
+  opacity: 0;
+  transition: 0.5s ease;
+}
+
+.portfolio-image.visible {
+  opacity: 1;
+}
+
+.portfolio-image, .placeholder-image {
+  grid-area: 1/1;
+  
+}
