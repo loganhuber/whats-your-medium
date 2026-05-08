@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_login import UserMixin
+from config import Config
 
 db = SQLAlchemy()
 
@@ -22,6 +23,11 @@ class Image(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category_name = db.relationship("Category", backref='images')
     storage_key = db.Column(db.String(255), nullable=False)
+
+    @property
+    def url(self):
+        return f"https://{Config.DO_SPACES_REGION}.digitaloceanspaces.com/{Config.DO_SPACES_BUCKET}/{self.storage_key}"
+        
 
 # category for images
 class Category(db.Model):
