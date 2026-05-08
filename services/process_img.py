@@ -2,10 +2,7 @@ from PIL import Image, ImageFilter
 from pathlib import Path
 
 def create_small(img, stem, path):
-    small_dir = path.parent / f'{path.name}-small'
-    small_dir.mkdir(parents=True, exist_ok=True)
-
-    small_path = small_dir / f'{stem}-small.webp'
+    small_path = path / f'{stem}-small.webp'
     img = img.filter(ImageFilter.GaussianBlur(radius=10))
     img.save(small_path, format='webp', quality=10)
     
