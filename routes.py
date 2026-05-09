@@ -96,7 +96,8 @@ def register_routes(app):
             )
 
         return jsonify({
-            "html" : html
+            "html" : html,
+            "count" : len(images)
         })
 
 

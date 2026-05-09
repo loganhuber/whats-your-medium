@@ -4,7 +4,7 @@
 
 {% block body %}
 <!-- Modal -->
-<div class="modal fade" id="modal-center" tabindex="-1" aria-labelledby="modalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="modal-center" tabindex="-1" aria-labelledby="modalCenterTitle" >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -32,27 +32,34 @@
 
     <h1>Hi mom. this is the portfolio page.</h1>
     <nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+  <div  role="tablist">
     {% for cat in categories %}
 
-      <button class="nav-link portfolio-btn" id="nav-{{ cat.id }}-tab" data-bs-toggle="tab" data-bs-target="#cat-{{ cat.id }}" type="button" role="tab" aria-controls="cat-{{ cat.id }}" aria-selected="true">{{ cat.category_name }}</button>
+      <li  role="presentation">
+        <a href="{{ url_for('portfolio', category_id=cat.id) }}">
+
+          <button class="portfolio-btn" id="nav-{{ cat.id }}-tab" data-category-id="{{ cat.id }}" data-bs-toggle="tab" data-bs-target="#cat-{{ cat.id }}" type="button" aria-controls="cat-{{ cat.id }}" aria-selected="true">
+              {{ cat.category_name }}
+          </button>
+        </a>
+        </li>
 
     {% endfor %}
   </div>
 </nav>
-<div class="tab-content" id="nav-tabContent">
-    {% for cat in categories %}
-    <div class="tab-pane fade" id="cat-{{ cat.id }}" role="tabpanel" aria-labelledby="nav-{{ cat.id }}-tab">
+<div class="portfolio-content">
+
+    <div class="" id="cat-{{ selected_category }}" aria-labelledby="nav-{{ selected_category }}-tab">
       <div class="container align-items-center">
-        <div class="row masonry-container" data-category-id="{{ cat.id }}">
+        <div class="row masonry-container" data-category-id="{{ selected_category }}">
 
               {% include 'public/components/image-card.html' %}
 
         </div>
       </div>
-      <button class="btn btn-primary load-more-btn" data-category-id="{{ cat.id }}">Load More</button>
+      <button class="btn btn-primary load-more-btn" data-category-id="{{ selected_category }}">Load More</button>
     </div>
-    {% endfor %}
+
 </div>
 </main>
 <script src="{{ url_for('static', filename='javascript/portfolio.js') }}"></script>
