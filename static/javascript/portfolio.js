@@ -24,12 +24,15 @@ function handleModal(e) {
 
 // handles the bootstrap masonry layout
 function initMasonry(container) {
-    imagesLoaded(container, function() {
-        new Masonry(container, {
-            percentPosition: true,
-            itemSelector: '.portfolio-image-container'
-        });
-    });
+    setTimeout(() => {
+
+      imagesLoaded(container, function() {
+          new Masonry(container, {
+              percentPosition: true,
+              itemSelector: '.portfolio-image-container'
+          });
+      });
+    }, 30)
 }
 
 // page starts with low rez placeholders
@@ -56,7 +59,7 @@ async function getMoreImages() {
     const categoryId = loadBtn.dataset.categoryId;
 
     if (!offsets[categoryId]) {
-        offsets[categoryId] = 2;
+        offsets[categoryId] = 10;
     }
 
     const response = await fetch(
@@ -66,8 +69,8 @@ async function getMoreImages() {
     const container = document.querySelector(`.masonry-container[data-category-id="${categoryId}"]`);
 
     container.insertAdjacentHTML('beforeend', data.html);
-    if (offsets[categoryId] > data.count) loadBtn.style.display = 'none';
-    offsets[categoryId] += 2;
+    if (offsets[categoryId] >= data.count) loadBtn.style.display = 'none';
+    offsets[categoryId] += 5;
 
     initMasonry(container);
     loadImgs();
@@ -78,6 +81,7 @@ loadBtn.addEventListener('click', getMoreImages);
 // heads up for future you:
 // the bootstrap navbar doesn't like when you e.target.closest to many things
 document.addEventListener("DOMContentLoaded", () => {
-    loadImgs()
-    document.addEventListener('click', handleModal)
+  document.addEventListener('click', handleModal)
+  loadImgs()
+  initMasonry(container)
 });

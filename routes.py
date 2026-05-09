@@ -64,28 +64,33 @@ def register_routes(app):
     
     @app.route('/portfolio')
     def portfolio():
-        selected_category = request.args.get('category_id')
+        selected_category_id = request.args.get('category_id')
         categories = Category.query.all()
-        print(f"selected category: {selected_category}")
-        images = Image.query.filter_by(category_id=selected_category).order_by(desc(Image.id)).limit(2).all()
+        print(f"selected category: {selected_category_id}")
+        images = Image.query.filter_by(category_id=selected_category_id).order_by(desc(Image.id)).limit(10).all()
+        selected_category = next(
+            (c for c in categories if c.id == int(selected_category_id)),
+            None
+        )
 
         return render_template(
             'public/portfolio.html',
+            selected_category_id=selected_category_id,
             selected_category=selected_category,
             categories=categories,
-            images=images
+            images=images,
             )
     
 
     @app.route('/portfolio/load-more', methods=["GET"])
     def portfolio_load_more():
-        selected_category = request.args.get('category_id')
+        selected_category_id = request.args.get('category_id')
         offset = request.args.get("offset", 0, type=int)
 
         images = (
-            Image.query.filter_by(category_id=selected_category)
+            Image.query.filter_by(category_id=selected_category_id)
             .order_by(desc(Image.id))
-            .limit(2)
+            .limit(5)
             .offset(offset)
             .all()
         )

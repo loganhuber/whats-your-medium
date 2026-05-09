@@ -4,7 +4,7 @@
 
 {% block body %}
 <!-- Modal -->
-<div class="modal fade" id="modal-center" tabindex="-1" aria-labelledby="modalCenterTitle" >
+<div class="modal fade" id="modal-center" tabindex="-1" data-bs-theme="dark" aria-labelledby="modalCenterTitle" >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -23,41 +23,48 @@
 </div>
 
 <main>
-    <!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-  Launch demo modal
-</button> -->
 
-
-
-    <h1>Hi mom. this is the portfolio page.</h1>
+    <div class="container text-center mb-5">
+      <h1 class="display-1">Portfolio</h1>
+    </div>
     <nav>
-  <div  role="tablist">
-    {% for cat in categories %}
+      <div class="container">
+          <ul class="row justify-content-center gx-1">
+              {% for cat in categories %}
+                <li class="col-2 list-unstyled text-center">
+                  <a class="portfolio-btn btn btn-secondary" id="nav-{{ cat.id }}-tab" data-category-id="{{ cat.id }}"  data-bs-target="#cat-{{ cat.id }}" href="{{ url_for('portfolio', category_id=cat.id) }}">
+                    
+                      {{ cat.category_name }}
+                        
+                  </a>
+                </li>
+                {% endfor %}
+          </ul>
 
-      <li  role="presentation">
-        <a href="{{ url_for('portfolio', category_id=cat.id) }}">
 
-          <button class="portfolio-btn" id="nav-{{ cat.id }}-tab" data-category-id="{{ cat.id }}" data-bs-toggle="tab" data-bs-target="#cat-{{ cat.id }}" type="button" aria-controls="cat-{{ cat.id }}" aria-selected="true">
-              {{ cat.category_name }}
-          </button>
-        </a>
-        </li>
-
-    {% endfor %}
-  </div>
+    
+      </div>
 </nav>
 <div class="portfolio-content">
+    <!-- <div class="container">
+      <div class="row-12 text-center">
+        <h4>{{ selected_category.category_name }}</h4>
+      </div>
+    </div> -->
 
-    <div class="" id="cat-{{ selected_category }}" aria-labelledby="nav-{{ selected_category }}-tab">
+    <div class="bg-dark py-5" id="cat-{{ selected_category_id }}" aria-labelledby="nav-{{ selected_category_id }}-tab">
       <div class="container align-items-center">
-        <div class="row masonry-container" data-category-id="{{ selected_category }}">
+        <div class="row masonry-container" data-category-id="{{ selected_category_id }}">
 
               {% include 'public/components/image-card.html' %}
 
         </div>
       </div>
-      <button class="btn btn-primary load-more-btn" data-category-id="{{ selected_category }}">Load More</button>
+      <div class="container text-center my-5">
+          <button class="btn btn-light load-more-btn" data-category-id="{{ selected_category_id }}">Load More</button>
+
+      </div>
+      
     </div>
 
 </div>
