@@ -25,21 +25,24 @@
 <main>
 
     <div class="container text-center mb-5">
-      <h1 class="display-1">Portfolio</h1>
+      <h1 class="display-1 ranade bold">Portfolio</h1>
     </div>
     <nav>
       <div class="container">
-          <ul class="row justify-content-center gx-1">
-              {% for cat in categories %}
-                <li class="col-2 list-unstyled text-center">
-                  <a class="portfolio-btn btn btn-secondary" id="nav-{{ cat.id }}-tab" data-category-id="{{ cat.id }}"  data-bs-target="#cat-{{ cat.id }}" href="{{ url_for('portfolio', category_id=cat.id) }}">
+          <div class="row justify-content-center" role="group">
+                <nav class="col col-md-8 col-lg-6 mb-2 btn-group portfolio-tabs" data-target-id="{{ selected_category_id }}">
+
+                  {% for cat in categories %}
                     
-                      {{ cat.category_name }}
+                      <a class="portfolio-btn btn btn-dark p-3" id="nav-{{ cat.id }}-tab" data-category-id="{{ cat.id }}"  data-bs-target="#cat-{{ cat.id }}" href="{{ url_for('portfolio', category_id=cat.id) }}">
                         
-                  </a>
-                </li>
-                {% endfor %}
-          </ul>
+                          {{ cat.category_name }}
+                            
+                      </a>
+                    
+                    {% endfor %}
+                    </nav>
+          </div>
 
 
     

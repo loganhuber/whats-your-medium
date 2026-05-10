@@ -6,6 +6,7 @@ const modalImage = document.getElementById('modal-image');
 const modalTitle = document.getElementById('modal-title');
 const container = document.querySelector('.masonry-container')
 const loadBtn = document.querySelector('.load-more-btn');
+const portfolioTabs = document.querySelector('.portfolio-tabs')
 
 // paired with getMoreImages to choose how many more pictures to grab
 const offsets = {} // example {current_id:10}
@@ -76,6 +77,17 @@ async function getMoreImages() {
     loadImgs();
 };
 
+function activateTab() {
+  const targetId = portfolioTabs.dataset.targetId
+
+  const tabBtns = document.querySelectorAll('.portfolio-btn')
+  tabBtns.forEach((btn) => {
+    if (btn.dataset.categoryId == targetId) {
+      btn.classList.add('active')
+    }
+  })
+}
+
 // event listeners 
 loadBtn.addEventListener('click', getMoreImages);
 // heads up for future you:
@@ -84,4 +96,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('click', handleModal)
   loadImgs()
   initMasonry(container)
+  activateTab()
 });
