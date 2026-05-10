@@ -204,7 +204,9 @@ class ImagesModelView(SecureModelView):
     column_labels = {
         'filename': 'Image',
         'category_name': 'Category',
-        'description': 'Description'
+        'description': 'Description',
+        'portfolio_img': 'Display in Portfolio',
+        'hero_img': 'Display as Hero Image'
     }
-    column_list = ['filename', 'description', 'category_name']
+    column_list = ['filename', 'description', 'category_name', 'portfolio_img', 'hero_img']
     form_excluded_columns = ['filename', 'storage_key', 'storage_key_small']

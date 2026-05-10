@@ -22,8 +22,12 @@ class Image(db.Model):
     description = db.Column(db.String(255), nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category_name = db.relationship("Category", backref='images')
-    storage_key = db.Column(db.String(255), nullable=False)
-    storage_key_small = db.Column(db.String(255), nullable=False)
+    storage_key = db.Column(db.String(255), nullable=True)
+    storage_key_small = db.Column(db.String(255), nullable=True)
+
+    portfolio_img = db.Column(db.Boolean, nullable=True, default=True)
+    hero_img = db.Column(db.Boolean, nullable=True, default=False)
+    
 
     @property
     def url(self):

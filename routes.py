@@ -20,7 +20,7 @@ def register_routes(app):
     
     @app.route('/')
     def index():
-
+        hero_images = Image.query.filter_by(hero_img=True).all()
         questions = FAQ.query.all()
 
         hero_title = ContentBlock.query.filter_by(key='hero_title').one()
@@ -36,7 +36,8 @@ def register_routes(app):
                                hero_paragraphs=hero_paragraphs,
                                bio_title=bio_title,
                                bio_paragraphs=bio_paragraphs,
-                               questions=questions
+                               questions=questions,
+                               hero_images=hero_images
                                )
     
     @app.route('/contact')
