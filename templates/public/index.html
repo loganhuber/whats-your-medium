@@ -72,7 +72,7 @@
 
     <section class="overflow-hidden position-relative mt-5" style="height:100vh;">
 
-            <img class="h-100 w-100 object-fit-cover img-fluid" src="{{ url_for('static', filename='assets/img-break-2.JPG')}}" alt="">
+            <img class="h-100 w-100 object-fit-cover img-fluid" src="{{ url_for('static', filename='assets/img-break-1.jpg')}}" alt="">
 
         <!-- <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
             <h1 class="display-1 p-2 fw-bold text-dark">Custom Ceramics</h1>
@@ -112,12 +112,6 @@
         </div>
     </div>
 
-    <!-- <section class="overflow-hidden position-relative mt-5" style="height:100vh;">
-
-        <img class="h-100 w-100 object-fit-cover img-fluid" src="{{ url_for('static', filename='assets/img-break-3.JPG')}}" alt="">
-
-    </section> -->
-
     
     <div class="container py-5">
         <h2>Frequently Asked Questions</h2>
@@ -125,24 +119,28 @@
             {% for question in questions %}
             <div class="card">
                 <div class="card-header" id="heading-{{ question.id }}">
-                <h5 class="mb-0">
-                    <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ question.id }}" aria-expanded="true" aria-controls="collapseOne">
-                    {{ question.question }}
-                    </button>
-                </h5>
+                    <h5 class="mb-0">
+                        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ question.id }}" aria-expanded="true" aria-controls="collapseOne">
+                            {{ question.question }}
+                        </button>
+                    </h5>
                 </div>
-    
+                
                 <div id="collapse-{{ question.id }}" class="collapse" aria-labelledby="headingOne" data-bs-parent="#faq">
-                <div class="card-body">
-                    {{ question.answer }}
-                </div>
+                    <div class="card-body">
+                        {{ question.answer }}
+                    </div>
                 </div>
             </div>
             {% endfor %}
-            </div>
-
+        </div>
+        
     </div>
+    
+    <section class="overflow-hidden position-relative mt-5 " style="height:100vh;">
 
+            <img class="h-100 w-100 object-fit-cover img-fluid" src="{{ url_for('static', filename='assets/img-break-2.JPG')}}" alt="">
+    </section>
 
 </main>
 {% endblock %}

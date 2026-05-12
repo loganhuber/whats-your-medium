@@ -1,18 +1,18 @@
 :root {
-  /* --primary-color: #4e4e4e;
-  --secondary-color: #d2cabf;
-  --tertiary-color: black;
-  --background-color: beige; */
-  /* --background-primary: rgb(255, 241, 138); */
-  --background-primary: #f5a666;
+  --text-primary-dark: #4a413c;
+  --text-primary-light: #ebefee;
+  --background-primary-1: #f5a666;
+  --background-primary-2: #bb6c43;
+  --background-primary-3: #c8906d;
   /* font-family: 'playfair display', serif; */
-
 }
 
 /* BASE */
 
 body {
-  background-color: var(--background-primary);
+  background-color: var(--background-primary-3);
+  /* background-image: url('../assets/wym-bg-1.jpg'); */
+  
 }
 
 main {
@@ -23,7 +23,7 @@ main {
 footer {
   height: 50vh;
   color: white;
-  background-color: black;
+  background-color: var(--text-primary-dark);
   margin-top: auto;
 }
 
@@ -44,13 +44,24 @@ form {
 } */
 
 /* UTILS */
+.dark-bg {
+  background-color: var(--text-primary-dark);
+}
 
 /* font */
 .ranade {
   font-family: 'ranade', sans-serif;
+  /* color: var(--text-primary-dark); */
 }
 .ranade.bold {
   font-weight: 600;
+}
+
+.white-text {
+  color: var(--text-primary-light);
+}
+.white-text:hover {
+  color: #646766;
 }
 /* COMPONENTS */
 
