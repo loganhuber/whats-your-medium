@@ -5,8 +5,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User, ContentBlock, Category, Image, FAQ
 from sqlalchemy import desc
 
+
+# helpers
 def get_paragraphs(str) -> list:
     return str.split('\n')
+
+def flash_logged_in_msg():
+    if current_user.is_authenticated:
+        flash(f"You are logged in.", 'admin')
+    
     
 
 def register_routes(app):
@@ -30,7 +37,8 @@ def register_routes(app):
 
         hero_paragraphs = get_paragraphs(hero_text.value)
         bio_paragraphs = get_paragraphs(bio_text.value)
-
+        
+        flash_logged_in_msg()
         return render_template('public/index.html',
                                hero_title=hero_title,
                                hero_paragraphs=hero_paragraphs,
@@ -42,6 +50,7 @@ def register_routes(app):
     
     @app.route('/contact')
     def contact():
+        flash_logged_in_msg()
         return render_template('public/contact.html')
     
     @app.route('/login', methods=["POST", "GET"])
@@ -73,6 +82,7 @@ def register_routes(app):
             (c for c in categories if c.id == int(selected_category_id)),
             None
         )
+        flash_logged_in_msg()
 
         return render_template(
             'public/portfolio.html',
