@@ -36,8 +36,8 @@ class SecureModelView(ModelView):
 
 
 class AdminModelView(SecureModelView):
-    form_excluded_columns = ('pwd')
-    column_exclude_list = ['pwd']
+    form_excluded_columns = ('pw_hash')
+    column_exclude_list = ['pw_hash']
 
     form_extra_fields = {
         'password' : PasswordField("Password")
@@ -45,7 +45,7 @@ class AdminModelView(SecureModelView):
 
     def on_model_change(self, form, model, is_created):
         if form.password.data:
-            model.pwd = generate_password_hash(form.password.data)
+            model.pw_hash = generate_password_hash(form.password.data)
 
 
 class CategoriesModelView(SecureModelView):
@@ -66,6 +66,26 @@ class ContentBlocksModelView(SecureModelView):
         "value" : "Content",
         'updated_at' : "Updated at:"
     }
+
+    form_widget_args = {
+        'key': {
+            'readonly': True
+        }
+    }
+
+    # Change 'hero_text' => 'Hero Text'
+    def format_key(view, context, model, name):
+        return model.key.replace('_', ' ').title()
+
+    column_formatters = {
+        'key': format_key
+    }
+
+    def edit_form(self, obj=None):
+        form = super().edit_form(obj)
+
+        del form.key
+        return form
 
 class FAQModelView(SecureModelView):
     form_columns = ('question', 'answer')
@@ -92,7 +112,8 @@ class ImagesModelView(SecureModelView):
         }
     }
 
-    def __init__(self, model, session, storage_service):
+    def __init__(self, model, session, storage_service, **kwargs):
+        super().__init__(model, session, **kwargs)
         self.storage_service = storage_service
 
         self.form_extra_fields = {

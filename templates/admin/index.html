@@ -1,1 +1,32 @@
 {% extends 'admin/master.html' %}
+
+{% block page_body %}
+{{ super() }}
+
+<!-- <style>
+    .btns {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 3rem;
+    }
+</style> -->
+<div class="container">
+    <h5 id="welcome-msg" data-user="{{ user }}"></h5>
+
+    <p>Use this page to edit the content of your website</p>
+    <div class="row">
+            <a class="btn btn-primary m-3" href="{{ url_for('index') }}">View Site</a>
+            <a class="btn btn-primary m-3" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+
+<script>
+    const msg = document.getElementById("welcome-msg");
+    const name = msg.dataset.user
+    console.log(name)
+    const capitalized = name[0].toUpperCase() + name.slice(1)
+    msg.textContent = `Welcome, ${capitalized}`
+
+</script>
+{% endblock %}

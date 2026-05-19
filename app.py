@@ -18,8 +18,6 @@ storage_service = StorageService(app)
 
 migrate = Migrate(app, db)
 
-
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -30,16 +28,16 @@ def load_user(user_id):
 
 admin = Admin(app, index_view=SecureAdminIndexView())
 
-admin.add_view(AdminModelView(User, db))
-admin.add_view(ContentBlocksModelView(ContentBlock, db))
-admin.add_view(CategoriesModelView(Category, db))
+admin.add_view(AdminModelView(User, db, name='Users'))
+admin.add_view(ContentBlocksModelView(ContentBlock, db, name='Content'))
+admin.add_view(CategoriesModelView(Category, db, name='Categories'))
 admin.add_view(
     ImagesModelView(
         Image,
         db,
-        storage_service=storage_service
+        storage_service=storage_service,
     ))
-admin.add_view(FAQModelView(FAQ, db))
+admin.add_view(FAQModelView(FAQ, db, name='FAQ'))
 
 register_routes(app)    
 

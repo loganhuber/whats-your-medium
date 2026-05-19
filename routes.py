@@ -107,14 +107,10 @@ def register_routes(app):
         })
 
 
-
-
-
-
     @app.route('/logout', methods=["GET", "POST"])
     def logout():
         logout_user()
-        return redirect('/')
+        return render_template('admin/login.html')
 
 
     @app.route("/uploads/<path:name>")
